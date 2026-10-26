@@ -1,0 +1,49 @@
+# Name of the GitHub Actions workflow
+name: Iris ML API - CI Pipeline - CSE
+
+# Triggers for the pipeline: runs on push or pull request to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Set explicit repository read permissions for security
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    # Use the latest Ubuntu runner environment provided by GitHub Actions
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository source code onto the runner
+      - name: Step 1 - Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the specified Python version and enable pip caching
+      - name: Step 2 - Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+
+      # Step 3: Upgrade pip and install project dependencies alongside test utilities
+      - name: Step 3 - Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx
+
+      # Step 4: Execute pytest unit tests with PYTHONPATH set to the project root
+      - name: Step 4 - Run unit tests
+        run: |
+          PYTHONPATH=. pytest
+
+      # Step 5: Build the Docker image to verify containerization succeeds in CI
+      - name: Step 5 - Build Docker image
+        run: |
+          docker build -t iris-api:latest . 

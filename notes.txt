@@ -1,0 +1,32 @@
+Step 1: create virtual environment
+Step 2: activate virtual environmemt
+Step 3: create project structure
+Step 4: install packages - scikit-learn, joblib,
+        fastapi, uvicorn, pydantic
+    Run: pip install -r requirements.txt 
+Step 5: train and save the model
+    Run: python train.py 
+Step 6: Create and start FastAPI 
+    uvicorn main: 
+
+
+PHASE 2: DOCKERIZE ML FLOW:
+Dataset -> Train -> Model Evaluation -> Prediction
+
+Commands for DOCKERIZE
+build docker image
+
+What is CI/CD?
+validate code changes through test and build checks
+contious delivery 
+
+Automated testing
+-Pytest + FastAPI test client + Github actions 
+
+Now install two new packages
+- httpx: FastAPI TestClient uses HTTPx to simulate http to your application
+- 
+
+
+
+                 
