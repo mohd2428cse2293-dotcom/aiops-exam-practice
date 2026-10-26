@@ -43,7 +43,17 @@ jobs:
         run: |
           PYTHONPATH=. pytest
 
-      # Step 5: Build the Docker image to verify containerization succeeds in CI
-      - name: Step 5 - Build Docker image
-        run: |
-          docker build -t iris-api:latest . 
+      # Step 5: Log in to Docker Hub using GitHub Repository Secrets
+      - name: Step 5 - Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Step 6: Build container image and push it to Docker Hub
+      - name: Step 6 - Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aiops-exam-practice:latest
